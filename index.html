@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uovo Sorpresa</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .egg-container {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      cursor: pointer;
+    }
+    .egg, .cracked, .surprise {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: opacity 0.5s ease;
+    }
+    .cracked, .surprise {
+      opacity: 0;
+    }
+    .show {
+      opacity: 1;
+    }
+    .shine {
+      box-shadow: 0 0 40px 10px rgba(255, 0, 255, 0.6);
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tocca l'uovo 👀</h1>
+  <div class="egg-container" onclick="crackEgg()">
+    <img src="egg.png" class="egg" id="egg" />
+    <img src="egg-cracked.png" class="cracked" id="cracked" />
+    <img src="surprise.jpg" class="surprise" id="surprise" />
+  </div>
+
+  <script>
+    function crackEgg() {
+      document.getElementById("egg").style.opacity = 0;
+      document.getElementById("cracked").classList.add("show");
+      setTimeout(() => {
+        const surprise = document.getElementById("surprise");
+        surprise.classList.add("show", "shine");
+      }, 500);
+    }
+  </script>
+</body>
+</html>
