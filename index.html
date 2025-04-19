@@ -7,20 +7,38 @@
   <style>
     body {
       margin: 0;
-      background-color: #8f2866; /* Colore di sfondo */
+      background-color: #ee9fce;
+      font-family: sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
       height: 100vh;
       overflow: hidden;
-      font-family: sans-serif;
+    }
+
+    .start-button {
+      font-size: 1.5rem;
+      padding: 12px 24px;
+      background-color: #fff;
+      color: #8f2866;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      z-index: 10;
+    }
+
+    .start-button:hover {
+      background-color: #ffd6f0;
     }
 
     .egg-container {
       position: relative;
-      width: 400px;  /* Aumenta la dimensione dell'uovo */
-      height: 400px;  /* Aumenta la dimensione dell'uovo */
+      width: 400px;
+      height: 400px;
       cursor: pointer;
+      display: none;
     }
 
     .egg, .cracked, .surprise {
@@ -60,31 +78,25 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 100px;
-      height: 100px;
-      background: radial-gradient(circle, rgba(255, 0, 255, 0.6), transparent 80%);
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.7), transparent 70%);
       transform: translate(-50%, -50%) scale(1);
       pointer-events: none;
       opacity: 0;
-      z-index: 2;
-      filter: blur(30px);
+      z-index: 1;
+      filter: blur(60px);
       border-radius: 50%;
     }
 
     .radiance.animate {
       opacity: 1;
-      animation: radiate 0.8s ease-out forwards;
+      animation: radiate 1.2s ease-out forwards;
     }
 
     @keyframes radiate {
-      0% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: translate(-50%, -50%) scale(30);
-        opacity: 0;
-      }
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(35); opacity: 0; }
     }
 
     .shake {
@@ -99,115 +111,117 @@
       100% { transform: rotate(0deg); }
     }
 
-    /* Animazione delle bolle */
+    .click-label {
+      position: absolute;
+      top: -30px;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      font-style: italic;
+      font-size: 1.2rem;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .congrats-message {
+      display: none;
+      text-align: center;
+      color: white;
+      margin-top: 20px;
+    }
+
+    .congrats-message h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .download-button {
+      padding: 10px 20px;
+      font-size: 1.1rem;
+      background-color: white;
+      color: #8f2866;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    /* Bolle fluttuanti */
     .bubble {
       position: absolute;
-      width: 30px;
-      height: 30px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.6);
-      opacity: 0;
-      animation: floatBubble 3s infinite;
+      background-color: rgba(255, 255, 255, 0.5);
+      animation: floatBubble 6s linear infinite;
+      z-index: 0;
+      filter: blur(2px);
     }
 
     @keyframes floatBubble {
       0% {
-        opacity: 0;
         transform: translateY(100vh) scale(0.5);
+        opacity: 0;
       }
       50% {
         opacity: 1;
-        transform: translateY(-50vh) scale(1);
       }
       100% {
+        transform: translateY(-20vh) scale(1);
         opacity: 0;
-        transform: translateY(-100vh) scale(0.5);
       }
     }
 
-    /* Animazione delle stelle */
-    .star {
+    /* Particelle scintillanti */
+    .sparkle {
       position: absolute;
-      width: 5px;
-      height: 5px;
-      background-color: rgba(255, 255, 255, 0.8);
+      width: 4px;
+      height: 4px;
+      background: white;
       border-radius: 50%;
       opacity: 0;
-      animation: twinkle 2s infinite ease-in-out;
+      animation: sparkle 2s ease-in-out infinite;
     }
 
-    @keyframes twinkle {
-      0% {
-        transform: scale(0);
-        opacity: 0;
-      }
-      50% {
-        transform: scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(0);
-        opacity: 0;
-      }
+    @keyframes sparkle {
+      0%, 100% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1); opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <div class="egg-container" onclick="crackEgg(event)">
+  <!-- Bottone iniziale -->
+  <button class="start-button" id="startBtn">DISCOVER YOUR SURPRISE</button>
+
+  <!-- Contenitore uovo -->
+  <div class="egg-container" onclick="crackEgg()" id="eggContainer">
+    <div class="click-label">*click*</div>
     <div class="radiance" id="radiance"></div>
     <img src="egg.png" id="egg" class="egg" alt="Uovo intero" />
     <img src="egg-cracked.png" id="cracked" class="cracked" alt="Uovo rotto" />
     <img src="surprise.png" id="surprise" class="surprise" alt="Sorpresa" />
   </div>
 
+  <!-- Messaggio finale -->
+  <div class="congrats-message" id="congratsMessage">
+    <h2>CONGRATULATIONS</h2>
+    <a class="download-button" href="https://example.com/download" target="_blank">
+      CLICK FOR ANOTHER SURPRISE
+    </a>
+  </div>
+
   <script>
-    function generateHearts(x, y) {
-      for (let i = 0; i < 5; i++) {
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        document.body.appendChild(heart);
+    document.getElementById("startBtn").addEventListener("click", () => {
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("eggContainer").style.display = "block";
+    });
 
-        heart.style.left = `${x + (Math.random() - 0.5) * 100}px`;
-        heart.style.bottom = `${y + (Math.random() - 0.5) * 50}px`;
-
-        setTimeout(() => heart.remove(), 3000);
-      }
-    }
-
-    function createBubbles() {
-      const bubbleCount = 10;
-      for (let i = 0; i < bubbleCount; i++) {
-        const bubble = document.createElement('div');
-        bubble.classList.add('bubble');
-        document.body.appendChild(bubble);
-
-        bubble.style.left = `${Math.random() * 100}vw`;
-        bubble.style.animationDuration = `${Math.random() * 3 + 2}s`;
-        bubble.style.animationDelay = `${Math.random() * 2}s`;
-
-        setTimeout(() => bubble.remove(), 5000);
-      }
-    }
-
-    function createStars() {
-      const starCount = 15;
-      for (let i = 0; i < starCount; i++) {
-        const star = document.createElement('div');
-        star.classList.add('star');
-        document.body.appendChild(star);
-
-        star.style.left = `${Math.random() * 100}vw`;
-        star.style.top = `${Math.random() * 100}vh`;
-
-        setTimeout(() => star.remove(), 2000);
-      }
-    }
-
-    function crackEgg(event) {
+    function crackEgg() {
       const egg = document.getElementById("egg");
       const cracked = document.getElementById("cracked");
       const surprise = document.getElementById("surprise");
       const radiance = document.getElementById("radiance");
+      const congrats = document.getElementById("congratsMessage");
 
       egg.classList.add("shake");
 
@@ -216,11 +230,38 @@
         cracked.classList.add("show");
         radiance.classList.add("animate");
         surprise.classList.add("show");
-        generateHearts(event.clientX, event.clientY);
-        createBubbles();  // Crea bolle
-        createStars();    // Crea stelle
+        createBubbles();
+        createSparkles();
         egg.classList.remove("shake");
+
+        setTimeout(() => {
+          congrats.style.display = "block";
+        }, 1000);
       }, 400);
+    }
+
+    function createBubbles() {
+      for (let i = 0; i < 20; i++) {
+        const bubble = document.createElement("div");
+        bubble.classList.add("bubble");
+        bubble.style.left = `${Math.random() * 100}vw`;
+        bubble.style.animationDuration = `${Math.random() * 3 + 3}s`;
+        bubble.style.animationDelay = `${Math.random() * 2}s`;
+        document.body.appendChild(bubble);
+        setTimeout(() => bubble.remove(), 7000);
+      }
+    }
+
+    function createSparkles() {
+      for (let i = 0; i < 25; i++) {
+        const sparkle = document.createElement("div");
+        sparkle.classList.add("sparkle");
+        sparkle.style.left = `${Math.random() * 100}vw`;
+        sparkle.style.top = `${Math.random() * 100}vh`;
+        sparkle.style.animationDelay = `${Math.random() * 3}s`;
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 4000);
+      }
     }
   </script>
 </body>
