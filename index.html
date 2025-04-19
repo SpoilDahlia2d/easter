@@ -56,36 +56,29 @@
       100% { transform: scale(1.0); }
     }
 
-    /* Radiante animazione */
     .radiance {
       position: absolute;
       top: 50%;
       left: 50%;
       width: 20px;
       height: 20px;
-      background: radial-gradient(circle, rgba(255,0,255,0.7), transparent 70%);
+      background: radial-gradient(circle, rgba(255,0,255,0.8), transparent 70%);
       transform: translate(-50%, -50%) scale(1);
       pointer-events: none;
       opacity: 0;
-      z-index: 1;
+      z-index: 2;
     }
 
     .radiance.animate {
+      opacity: 1;
       animation: radiate 0.8s ease-out forwards;
     }
 
     @keyframes radiate {
-      from {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-      }
-      to {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(20);
-      }
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(20); opacity: 0; }
     }
 
-    /* Shake effetto per egg */
     .shake {
       animation: shake 0.4s ease;
     }
@@ -102,9 +95,9 @@
 <body>
   <div class="egg-container" onclick="crackEgg()">
     <div class="radiance" id="radiance"></div>
-    <img src="egg.png" class="egg" id="egg" alt="Uovo intero" />
-    <img src="egg-cracked.png" class="cracked" id="cracked" alt="Uovo rotto" />
-    <img src="surprise.png" class="surprise" id="surprise" alt="Sorpresa" />
+    <img src="egg.png" id="egg" class="egg" alt="Uovo intero" />
+    <img src="egg-cracked.png" id="cracked" class="cracked" alt="Uovo rotto" />
+    <img src="surprise.png" id="surprise" class="surprise" alt="Sorpresa" />
   </div>
 
   <script>
@@ -114,20 +107,22 @@
       const surprise = document.getElementById("surprise");
       const radiance = document.getElementById("radiance");
 
-      // Shake solo sull’uovo intero
+      // Shake l’uovo intero
       egg.classList.add("shake");
 
+      // Dopo l'animazione: cambia immagini e mostra effetti
       setTimeout(() => {
-        egg.classList.remove("shake");
         egg.style.opacity = 0;
         cracked.classList.add("show");
         radiance.classList.add("animate");
         surprise.classList.add("show");
+        egg.classList.remove("shake");
       }, 400);
     }
   </script>
 </body>
 </html>
+
 
 
 
