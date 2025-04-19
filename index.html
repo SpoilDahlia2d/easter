@@ -5,99 +5,107 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Uovo a sorpresa</title>
   <style>
-    body {
-      margin: 0;
-      background: radial-gradient(ellipse at center, #000 0%, #111 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      overflow: hidden;
-      font-family: sans-serif;
-    }
+  body {
+  margin: 0;
+  background: radial-gradient(ellipse at center, #000 0%, #111 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+  font-family: sans-serif;
+}
 
-    .egg-container {
-      position: relative;
-      width: 600px;
-      height: 600px;
-      cursor: pointer;
-    }
+.egg-container {
+  position: relative;
+  width: 400px;  /* Aumenta la dimensione dell'uovo */
+  height: 400px;  /* Aumenta la dimensione dell'uovo */
+  cursor: pointer;
+}
 
-    .egg, .cracked, .surprise {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      transition: opacity 0.4s ease, transform 0.5s ease;
-    }
+.egg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.4s ease, transform 0.5s ease;
+}
 
-    .cracked, .surprise {
-      opacity: 0;
-    }
+.cracked, .surprise {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.4s ease, transform 0.5s ease;
+}
 
-    .cracked.show,
-    .surprise.show {
-      opacity: 1;
-    }
+.cracked, .surprise {
+  opacity: 0;
+}
 
-    .surprise {
-      z-index: 3;
-      transform: scale(0.8);
-    }
+.cracked.show,
+.surprise.show {
+  opacity: 1;
+}
 
-    .surprise.show {
-      transform: scale(1.1);
-      animation: popIn 0.5s ease;
-    }
+.surprise {
+  z-index: 3;
+  transform: scale(0.8);
+}
 
-    @keyframes popIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      60% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(1.0); }
-    }
+.surprise.show {
+  transform: scale(1.1);
+  animation: popIn 0.5s ease;
+}
 
-    .radiance {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100px;
-      height: 100px;
-      background: radial-gradient(circle, rgba(255, 0, 255, 0.6), transparent 80%);
-      transform: translate(-50%, -50%) scale(1);
-      pointer-events: none;
-      opacity: 0;
-      z-index: 2;
-      filter: blur(30px);
-      border-radius: 50%;
-    }
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1.0); }
+}
 
-    .radiance.animate {
-      opacity: 1;
-      animation: radiate 0.8s ease-out forwards;
-    }
+.radiance {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(255, 0, 255, 0.6), transparent 80%);
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 2;
+  filter: blur(30px);
+  border-radius: 50%;
+}
 
-    @keyframes radiate {
-      0% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: translate(-50%, -50%) scale(30);
-        opacity: 0;
-      }
-    }
+.radiance.animate {
+  opacity: 1;
+  animation: radiate 0.8s ease-out forwards;
+}
 
-    .shake {
-      animation: shake 0.4s ease;
-    }
+@keyframes radiate {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(30);
+    opacity: 0;
+  }
+}
 
-    @keyframes shake {
-      0% { transform: rotate(0deg); }
-      25% { transform: rotate(2deg); }
-      50% { transform: rotate(-2deg); }
-      75% { transform: rotate(1deg); }
-      100% { transform: rotate(0deg); }
-    }
+.shake {
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  50% { transform: rotate(-2deg); }
+  75% { transform: rotate(1deg); }
+  100% { transform: rotate(0deg); }
+}
   </style>
 </head>
 <body>
