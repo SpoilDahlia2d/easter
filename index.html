@@ -5,111 +5,155 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Uovo a sorpresa</title>
   <style>
-  body {
-  margin: 0;
-  background: radial-gradient(ellipse at center, #000 0%, #111 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  overflow: hidden;
-  font-family: sans-serif;
-}
+    body {
+      margin: 0;
+      background-color: #8f2866; /* Colore di sfondo */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
 
-.egg-container {
-  position: relative;
-  width: 400px;  /* Aumenta la dimensione dell'uovo */
-  height: 400px;  /* Aumenta la dimensione dell'uovo */
-  cursor: pointer;
-}
+    .egg-container {
+      position: relative;
+      width: 400px;  /* Aumenta la dimensione dell'uovo */
+      height: 400px;  /* Aumenta la dimensione dell'uovo */
+      cursor: pointer;
+    }
 
-.egg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: opacity 0.4s ease, transform 0.5s ease;
-}
+    .egg, .cracked, .surprise {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: opacity 0.4s ease, transform 0.5s ease;
+    }
 
-.cracked, .surprise {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: opacity 0.4s ease, transform 0.5s ease;
-}
+    .cracked, .surprise {
+      opacity: 0;
+    }
 
-.cracked, .surprise {
-  opacity: 0;
-}
+    .cracked.show,
+    .surprise.show {
+      opacity: 1;
+    }
 
-.cracked.show,
-.surprise.show {
-  opacity: 1;
-}
+    .surprise {
+      z-index: 3;
+      transform: scale(0.8);
+    }
 
-.surprise {
-  z-index: 3;
-  transform: scale(0.8);
-}
+    .surprise.show {
+      transform: scale(1.1);
+      animation: popIn 0.5s ease;
+    }
 
-.surprise.show {
-  transform: scale(1.1);
-  animation: popIn 0.5s ease;
-}
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      60% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1.0); }
+    }
 
-@keyframes popIn {
-  0% { transform: scale(0.5); opacity: 0; }
-  60% { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(1.0); }
-}
+    .radiance {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(255, 0, 255, 0.6), transparent 80%);
+      transform: translate(-50%, -50%) scale(1);
+      pointer-events: none;
+      opacity: 0;
+      z-index: 2;
+      filter: blur(30px);
+      border-radius: 50%;
+    }
 
-.radiance {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100px;
-  height: 100px;
-  background: radial-gradient(circle, rgba(255, 0, 255, 0.6), transparent 80%);
-  transform: translate(-50%, -50%) scale(1);
-  pointer-events: none;
-  opacity: 0;
-  z-index: 2;
-  filter: blur(30px);
-  border-radius: 50%;
-}
+    .radiance.animate {
+      opacity: 1;
+      animation: radiate 0.8s ease-out forwards;
+    }
 
-.radiance.animate {
-  opacity: 1;
-  animation: radiate 0.8s ease-out forwards;
-}
+    @keyframes radiate {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(30);
+        opacity: 0;
+      }
+    }
 
-@keyframes radiate {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(30);
-    opacity: 0;
-  }
-}
+    .shake {
+      animation: shake 0.4s ease;
+    }
 
-.shake {
-  animation: shake 0.4s ease;
-}
+    @keyframes shake {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(2deg); }
+      50% { transform: rotate(-2deg); }
+      75% { transform: rotate(1deg); }
+      100% { transform: rotate(0deg); }
+    }
 
-@keyframes shake {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(2deg); }
-  50% { transform: rotate(-2deg); }
-  75% { transform: rotate(1deg); }
-  100% { transform: rotate(0deg); }
-}
+    /* Animazione delle bolle */
+    .bubble {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.6);
+      opacity: 0;
+      animation: floatBubble 3s infinite;
+    }
+
+    @keyframes floatBubble {
+      0% {
+        opacity: 0;
+        transform: translateY(100vh) scale(0.5);
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(-50vh) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-100vh) scale(0.5);
+      }
+    }
+
+    /* Animazione delle stelle */
+    .star {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      opacity: 0;
+      animation: twinkle 2s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="egg-container" onclick="crackEgg()">
+  <div class="egg-container" onclick="crackEgg(event)">
     <div class="radiance" id="radiance"></div>
     <img src="egg.png" id="egg" class="egg" alt="Uovo intero" />
     <img src="egg-cracked.png" id="cracked" class="cracked" alt="Uovo rotto" />
@@ -117,7 +161,49 @@
   </div>
 
   <script>
-    function crackEgg() {
+    function generateHearts(x, y) {
+      for (let i = 0; i < 5; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        document.body.appendChild(heart);
+
+        heart.style.left = `${x + (Math.random() - 0.5) * 100}px`;
+        heart.style.bottom = `${y + (Math.random() - 0.5) * 50}px`;
+
+        setTimeout(() => heart.remove(), 3000);
+      }
+    }
+
+    function createBubbles() {
+      const bubbleCount = 10;
+      for (let i = 0; i < bubbleCount; i++) {
+        const bubble = document.createElement('div');
+        bubble.classList.add('bubble');
+        document.body.appendChild(bubble);
+
+        bubble.style.left = `${Math.random() * 100}vw`;
+        bubble.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        bubble.style.animationDelay = `${Math.random() * 2}s`;
+
+        setTimeout(() => bubble.remove(), 5000);
+      }
+    }
+
+    function createStars() {
+      const starCount = 15;
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        document.body.appendChild(star);
+
+        star.style.left = `${Math.random() * 100}vw`;
+        star.style.top = `${Math.random() * 100}vh`;
+
+        setTimeout(() => star.remove(), 2000);
+      }
+    }
+
+    function crackEgg(event) {
       const egg = document.getElementById("egg");
       const cracked = document.getElementById("cracked");
       const surprise = document.getElementById("surprise");
@@ -130,6 +216,9 @@
         cracked.classList.add("show");
         radiance.classList.add("animate");
         surprise.classList.add("show");
+        generateHearts(event.clientX, event.clientY);
+        createBubbles();  // Crea bolle
+        createStars();    // Crea stelle
         egg.classList.remove("shake");
       }, 400);
     }
