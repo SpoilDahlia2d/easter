@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Uovo a Sorpresa 🥚✨</title>
+  <title>Uovo a sorpresa 🥚✨</title>
   <style>
     body {
       margin: 0;
-      background: black;
+      background: radial-gradient(ellipse at center, #000 0%, #111 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -28,25 +28,65 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      transition: opacity 0.5s ease;
+      transition: opacity 0.4s ease;
     }
 
-    .cracked, .surprise {
+    .cracked, .surprise, .glow {
       opacity: 0;
     }
 
-    .show {
+    .cracked.show,
+    .surprise.show {
       opacity: 1;
     }
 
-    .shine {
-      box-shadow: 0 0 40px 10px rgba(255, 0, 255, 0.6);
+    .glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 300px;
       border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,0,255,0.4), transparent);
+      animation: pulse 1s infinite;
+      mix-blend-mode: screen;
+      z-index: 2;
+    }
+
+    .surprise {
+      z-index: 3;
+      transform: scale(0.8);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .surprise.show {
+      transform: scale(1);
+      box-shadow: 0 0 40px 10px rgba(255, 0, 255, 0.5);
+      border-radius: 50%;
+    }
+
+    .egg-container.shake {
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+      0% { transform: rotate(0); }
+      25% { transform: rotate(2deg); }
+      50% { transform: rotate(-2deg); }
+      75% { transform: rotate(1deg); }
+      100% { transform: rotate(0); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 0.5; }
     }
   </style>
 </head>
 <body>
-  <div class="egg-container" onclick="crackEgg()">
+  <div class="egg-container" onclick="crackEgg()" id="container">
+    <div class="glow" id="glow"></div>
     <img src="egg.png" class="egg" id="egg" alt="Uovo intero" />
     <img src="egg-cracked.png" class="cracked" id="cracked" alt="Uovo rotto" />
     <img src="surprise.jpg" class="surprise" id="surprise" alt="Sorpresa" />
@@ -54,13 +94,24 @@
 
   <script>
     function crackEgg() {
-      document.getElementById("egg").style.opacity = 0;
-      document.getElementById("cracked").classList.add("show");
+      const container = document.getElementById("container");
+      const egg = document.getElementById("egg");
+      const cracked = document.getElementById("cracked");
+      const surprise = document.getElementById("surprise");
+      const glow = document.getElementById("glow");
+
+      container.classList.add("shake");
+      setTimeout(() => container.classList.remove("shake"), 400);
+
+      egg.style.opacity = 0;
+      cracked.classList.add("show");
+      glow.style.opacity = 1;
+
       setTimeout(() => {
-        const surprise = document.getElementById("surprise");
-        surprise.classList.add("show", "shine");
-      }, 500);
+        surprise.classList.add("show");
+      }, 600);
     }
   </script>
 </body>
 </html>
+
