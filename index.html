@@ -31,7 +31,7 @@
       transition: opacity 0.4s ease, transform 0.5s ease;
     }
 
-    .cracked, .surprise, .radiance {
+    .cracked, .surprise {
       opacity: 0;
     }
 
@@ -40,7 +40,23 @@
       opacity: 1;
     }
 
-    /* Effetto bagliore radiante */
+    .surprise {
+      z-index: 3;
+      transform: scale(0.8);
+    }
+
+    .surprise.show {
+      transform: scale(1.1);
+      animation: popIn 0.5s ease;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      60% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1.0); }
+    }
+
+    /* Radiante animazione */
     .radiance {
       position: absolute;
       top: 50%;
@@ -49,9 +65,13 @@
       height: 20px;
       background: radial-gradient(circle, rgba(255,0,255,0.7), transparent 70%);
       transform: translate(-50%, -50%) scale(1);
-      animation: radiate 0.8s ease-out forwards;
       pointer-events: none;
+      opacity: 0;
       z-index: 1;
+    }
+
+    .radiance.animate {
+      animation: radiate 0.8s ease-out forwards;
     }
 
     @keyframes radiate {
@@ -65,36 +85,17 @@
       }
     }
 
-    /* Immagine sorpresa trasparente con animazione epica */
-    .surprise {
-      z-index: 3;
-      transform: scale(0.8);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-
-    .surprise.show {
-      opacity: 1;
-      transform: scale(1.1);
-      animation: popIn 0.5s ease;
-    }
-
-    @keyframes popIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      60% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(1.0); }
-    }
-
-    /* Shake solo sull’uovo intero */
-    #egg.shake {
+    /* Shake effetto per egg */
+    .shake {
       animation: shake 0.4s ease;
     }
 
     @keyframes shake {
-      0% { transform: rotate(0); }
+      0% { transform: rotate(0deg); }
       25% { transform: rotate(2deg); }
       50% { transform: rotate(-2deg); }
       75% { transform: rotate(1deg); }
-      100% { transform: rotate(0); }
+      100% { transform: rotate(0deg); }
     }
   </style>
 </head>
@@ -113,25 +114,20 @@
       const surprise = document.getElementById("surprise");
       const radiance = document.getElementById("radiance");
 
-      // Shake dell'uovo intero
+      // Shake solo sull’uovo intero
       egg.classList.add("shake");
-      setTimeout(() => egg.classList.remove("shake"), 400);
 
-      // Mostra uovo rotto
-      egg.style.opacity = 0;
-      cracked.classList.add("show");
-
-      // Effetto bagliore radiante
-      radiance.style.opacity = 1;
-      radiance.style.animation = "radiate 0.8s ease-out forwards";
-
-      // Mostra la sorpresa
       setTimeout(() => {
+        egg.classList.remove("shake");
+        egg.style.opacity = 0;
+        cracked.classList.add("show");
+        radiance.classList.add("animate");
         surprise.classList.add("show");
-      }, 600);
+      }, 400);
     }
   </script>
 </body>
 </html>
+
 
 
