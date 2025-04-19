@@ -2,106 +2,130 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Uovo a sorpresa</title>
   <style>
     body {
       margin: 0;
-      background-color: #f9bcd0;
+      background-color: #f8c4d9; /* rosatenue */;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
       overflow: hidden;
-      flex-direction: column;
+      font-family: sans-serif;
     }
 
-    .container {
+    .egg-container {
       position: relative;
-      text-align: center;
-    }
-
-    .egg {
-      width: 200px;
-      cursor: pointer;
-      animation: shake 1s infinite alternate;
-    }
-
-    .egg-cracked,
-    .surprise,
-    .glow {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      display: none;
-    }
-
-    .egg-cracked {
-      width: 200px;
-      z-index: 2;
-    }
-
-    .glow {
       width: 300px;
       height: 300px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(255,192,203,0.1) 70%, transparent 80%);
-      z-index: 1;
-      animation: pulse 1s ease-out;
+      cursor: pointer;
+    }
+
+    .egg, .cracked, .surprise {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: opacity 0.4s ease, transform 0.5s ease;
+    }
+
+    .cracked, .surprise {
+      opacity: 0;
+    }
+
+    .cracked.show,
+    .surprise.show {
+      opacity: 1;
     }
 
     .surprise {
-      width: 250px;
-      margin-top: 20px;
       z-index: 3;
+      transform: scale(0.8);
+    }
+
+    .surprise.show {
+      transform: scale(1.1);
+      animation: popIn 0.5s ease;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      60% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1.0); }
+    }
+
+    .radiance {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(255, 0, 255, 0.6), transparent 80%);
+      transform: translate(-50%, -50%) scale(1);
+      pointer-events: none;
+      opacity: 0;
+      z-index: 2;
+      filter: blur(30px);
+      border-radius: 50%;
+    }
+
+    .radiance.animate {
+      opacity: 1;
+      animation: radiate 0.8s ease-out forwards;
+    }
+
+    @keyframes radiate {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(30);
+        opacity: 0;
+      }
+    }
+
+    .shake {
+      animation: shake 0.4s ease;
     }
 
     @keyframes shake {
-      0% { transform: translateX(-50%) rotate(-2deg); }
-      100% { transform: translateX(-50%) rotate(2deg); }
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: translateX(-50%) scale(0.8);
-        opacity: 0.4;
-      }
-      100% {
-        transform: translateX(-50%) scale(1.6);
-        opacity: 0;
-      }
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(2deg); }
+      50% { transform: rotate(-2deg); }
+      75% { transform: rotate(1deg); }
+      100% { transform: rotate(0deg); }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <img src="egg.png" alt="Egg" class="egg" id="egg" />
-    <div class="glow" id="glow"></div>
-    <img src="egg-cracked.png" alt="Egg Cracked" class="egg-cracked" id="eggCracked" />
-    <img src="surprise.png" alt="Sorpresa" class="surprise" id="surprise" />
+  <div class="egg-container" onclick="crackEgg()">
+    <div class="radiance" id="radiance"></div>
+    <img src="egg.png" id="egg" class="egg" alt="Uovo intero" />
+    <img src="egg-cracked.png" id="cracked" class="cracked" alt="Uovo rotto" />
+    <img src="surprise.png" id="surprise" class="surprise" alt="Sorpresa" />
   </div>
 
   <script>
-    const egg = document.getElementById("egg");
-    const cracked = document.getElementById("eggCracked");
-    const surprise = document.getElementById("surprise");
-    const glow = document.getElementById("glow");
+    function crackEgg() {
+      const egg = document.getElementById("egg");
+      const cracked = document.getElementById("cracked");
+      const surprise = document.getElementById("surprise");
+      const radiance = document.getElementById("radiance");
 
-    egg.addEventListener("click", () => {
-      egg.style.display = "none";
-      cracked.style.display = "block";
-      glow.style.display = "block";
-      surprise.style.display = "block";
+      egg.classList.add("shake");
 
-      // Riproduci il bagliore
-      glow.style.animation = "pulse 1s ease-out";
-
-      // Rimuove glow dopo 1s per non restare
       setTimeout(() => {
-        glow.style.display = "none";
-      }, 1000);
-    });
+        egg.style.opacity = 0;
+        cracked.classList.add("show");
+        radiance.classList.add("animate");
+        surprise.classList.add("show");
+        egg.classList.remove("shake");
+      }, 400);
+    }
   </script>
 </body>
 </html>
+
